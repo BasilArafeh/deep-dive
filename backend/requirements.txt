@@ -1,0 +1,33 @@
+# Web framework
+fastapi
+uvicorn[standard]
+python-dotenv
+pydantic-settings
+slowapi
+python-json-logger
+
+# LangGraph and LangChain
+langgraph
+langchain
+langchain-openai
+langsmith
+
+# OpenAI
+openai
+
+# Vector store
+pinecone
+
+# Search and scraping
+tavily-python
+httpx
+beautifulsoup4
+
+# Utilities
+arxiv
+uuid
+
+# Testing
+pytest
+pytest-asyncio
+httpx

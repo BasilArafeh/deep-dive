@@ -1,0 +1,70 @@
+# Tests the Deep Dive backend on every push/PR to main, and deploys to Railway
+# automatically when tests pass on a push to main.
+#
+# Required GitHub secrets (Settings → Secrets and variables → Actions):
+# - RAILWAY_TOKEN — Railway dashboard → Account Settings → Tokens
+
+name: Backend CI/CD
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Create dummy .env for config load
+        run: |
+          printf '%s\n' \
+            'OPENAI_API_KEY=test' \
+            'PINECONE_API_KEY=test' \
+            'PINECONE_INDEX_NAME=test' \
+            'TAVILY_API_KEY=test' \
+            'LANGCHAIN_API_KEY=test' \
+            'LANGCHAIN_TRACING_V2=false' \
+            'LANGCHAIN_PROJECT=test' \
+            'ENVIRONMENT=development' \
+            'API_KEY=test-key-for-ci-at-least-32-chars-long' \
+            'FRONTEND_URL=http://localhost:3000' \
+            > .env
+
+      - name: Run tests or import smoke check
+        run: |
+          if [ -d tests ]; then
+            python -m pytest tests/ -v --tb=short
+          else
+            python -c "from app.main import app; print('Import check passed')"
+          fi
+
+  deploy:
+    needs: test
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+
+      - name: Deploy to Railway
+        uses: bervProject/railway-deploy@main
+        with:
+          railway_token: ${{ secrets.RAILWAY_TOKEN }}
+          service: deep-dive-backend
