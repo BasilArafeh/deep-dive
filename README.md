@@ -30,28 +30,28 @@
 ```
 ┌─────────────────────────────────────────────────────────────────┐
 │                        Next.js Frontend                         │
-│  Landing → Research mode (SSE timeline) → Report + Chat panel  │
+│  Landing → Research mode (SSE timeline) → Report + Chat panel   │
 └─────────────────┬───────────────────────────────────┬───────────┘
                   │ SSE stream                        │ SSE stream
                   ▼                                   ▼
 ┌─────────────────────────────────────────────────────────────────┐
-│                      FastAPI Backend (Railway)                   │
-│                                                                  │
+│                      FastAPI Backend (Railway)                  │
+│                                                                 │
 │  ┌─────────────────────────────────────────────────────────┐    │
-│  │                    LangGraph Agent                       │    │
-│  │                                                          │    │
+│  │                    LangGraph Agent                      │    │
+│  │                                                         │    │
 │  │  Planner → Searcher → Scraper → Summarizer → Synthesizer│    │
 │  │    GPT-4o   Tavily+     httpx+    GPT-4o       GPT-4o   │    │
 │  │             arXiv       BS4                   (6000tok) │    │
 │  └─────────────────────────────────────────────────────────┘    │
-│                                                                  │
+│                                                                 │
 │  ┌─────────────────────────────────────────────────────────┐    │
-│  │               Multi-Route Chat Orchestrator              │    │
-│  │                                                          │    │
+│  │               Multi-Route Chat Orchestrator             │    │
+│  │                                                         │    │
 │  │  Intent Classifier → Router                             │    │
-│  │  GPT-4o                                                  │    │
+│  │  GPT-4o                                                 │    │
 │  │    ├─ specific    → RAG (Pinecone similarity)           │    │
-│  │    ├─ broad       → Full report context (Pinecone fetch) │    │
+│  │    ├─ broad       → Full report context (Pinecone fetch)│    │
 │  │    ├─ out_of_report → Web search offer (Tavily)         │    │
 │  │    ├─ out_of_domain → Domain redirect message           │    │
 │  │    └─ irrelevant  → Gentle redirect                     │    │
@@ -60,8 +60,8 @@
                   │ embed + upsert          │ query
                   ▼                         ▼
           ┌───────────────────────────────────┐
-          │     Pinecone Vector Store          │
-          │  (session-namespaced chunks)       │
+          │     Pinecone Vector Store         │
+          │  (session-namespaced chunks)      │
           └───────────────────────────────────┘
 ```
 
