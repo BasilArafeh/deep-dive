@@ -25,7 +25,6 @@ beautifulsoup4
 
 # Utilities
 arxiv
-uuid
 
 # Testing
 pytest

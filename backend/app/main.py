@@ -21,7 +21,7 @@ from app.middleware.timeout import TimeoutMiddleware
 from app.routers.chat_router import chat_router
 from app.routers.research_router import research_router
 
-# JSON logs are machine-parseable for Railway/Docker log drains and make it easy
+# JSON logs are machine-parseable for Vercel log drains and make it easy
 # to filter by request_id, status, duration, and other structured fields.
 _log_level = logging.INFO if settings.environment == "development" else logging.WARNING
 _handler = logging.StreamHandler(sys.stdout)
@@ -81,7 +81,7 @@ app = FastAPI(
 )
 
 # Development: allow all origins for local testing.
-# Production: only the frontend Vercel URL (set via FRONTEND_URL on Railway).
+# Production: only the frontend origin (set via FRONTEND_URL on Vercel).
 allowed_origins = (
     ["*"]
     if settings.environment == "development"

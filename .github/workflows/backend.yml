@@ -1,10 +1,7 @@
-# Tests the Deep Dive backend on every push/PR to main, and deploys to Railway
-# automatically when tests pass on a push to main.
-#
-# Required GitHub secrets (Settings → Secrets and variables → Actions):
-# - RAILWAY_TOKEN — Railway dashboard → Account Settings → Tokens
+# Tests the Deep Dive backend on every push/PR to main.
+# Production deploys are handled by the Vercel Git integration.
 
-name: Backend CI/CD
+name: Backend CI
 
 on:
   push:
@@ -23,10 +20,10 @@ jobs:
       - name: Check out code
         uses: actions/checkout@v4
 
-      - name: Set up Python 3.11
+      - name: Set up Python 3.12
         uses: actions/setup-python@v5
         with:
-          python-version: "3.11"
+          python-version: "3.12"
 
       - name: Install dependencies
         run: pip install -r requirements.txt
@@ -53,18 +50,3 @@ jobs:
           else
             python -c "from app.main import app; print('Import check passed')"
           fi
-
-  deploy:
-    needs: test
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Check out code
-        uses: actions/checkout@v4
-
-      - name: Deploy to Railway
-        uses: bervProject/railway-deploy@main
-        with:
-          railway_token: ${{ secrets.RAILWAY_TOKEN }}
-          service: deep-dive-backend
