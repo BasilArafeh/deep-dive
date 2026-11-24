@@ -7,7 +7,6 @@ import { NextResponse } from "next/server";
 
 /** Research SSE can run for several minutes; keep the Vercel proxy alive. */
 export const maxDuration = 300;
-export const dynamic = "force-dynamic";
 
 /**
  * Proxy POST /api/research → backend /api/research with X-API-Key.
