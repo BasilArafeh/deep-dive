@@ -323,8 +323,8 @@ cd frontend
 npm install
 
 # Create .env.local
-echo "NEXT_PUBLIC_API_URL=http://localhost:8000" > .env.local
-echo "NEXT_PUBLIC_API_KEY=your_api_key" >> .env.local
+echo "API_URL=http://localhost:8000" > .env.local
+echo "API_KEY=your_api_key" >> .env.local
 
 npm run dev
 ```
@@ -347,8 +347,8 @@ FRONTEND_URL=http://localhost:3000
 
 **Frontend (.env.local)**
 ```
-NEXT_PUBLIC_API_URL=http://localhost:8000
-NEXT_PUBLIC_API_KEY=
+API_URL=http://localhost:8000
+API_KEY=
 ```
 
 ---
@@ -366,7 +366,7 @@ NEXT_PUBLIC_API_KEY=
 1. Connect GitHub repo to Vercel
 2. Set root directory to `frontend`
 3. Framework: Next.js (auto-detected)
-4. Add `NEXT_PUBLIC_API_URL` (Railway URL) and `NEXT_PUBLIC_API_KEY`
+4. Add `API_URL` (Railway URL) and `API_KEY`
 
 After both are deployed, update `FRONTEND_URL` in Railway to the live Vercel URL and redeploy.
 

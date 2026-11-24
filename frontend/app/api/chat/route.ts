@@ -13,8 +13,8 @@ export const dynamic = "force-dynamic";
  * Proxy POST /api/chat → backend /api/chat with X-API-Key.
  */
 export async function POST(request: Request): Promise<Response> {
-  const apiUrl = process.env.NEXT_PUBLIC_API_URL;
-  const apiKey = process.env.NEXT_PUBLIC_API_KEY;
+  const apiUrl = process.env.API_URL;
+  const apiKey = process.env.API_KEY;
 
   if (!apiUrl || !apiKey) {
     return NextResponse.json(
