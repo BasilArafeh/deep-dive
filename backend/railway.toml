@@ -1,0 +1,13 @@
+# Railway reads this file on every deployment to configure how the backend
+# is built and how the service is started, health-checked, and restarted.
+
+[build]
+builder = "DOCKERFILE"
+dockerfilePath = "Dockerfile"
+
+[deploy]
+# Prefer Railway's $PORT when set; fall back to 8000 for local Docker runs.
+startCommand = "uvicorn app.main:app --host 0.0.0.0 --port ${PORT:-8000} --workers 1"
+healthcheckPath = "/health"
+healthcheckTimeout = 30
+restartPolicyType = "ON_FAILURE"

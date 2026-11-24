@@ -10,8 +10,7 @@ from starlette.requests import Request
 
 logger = logging.getLogger("deep_dive")
 
-# Stay under Vercel's 300s function limit while still covering a full research run.
-REQUEST_TIMEOUT_SECONDS = 280
+REQUEST_TIMEOUT_SECONDS = 180
 
 
 class TimeoutMiddleware(BaseHTTPMiddleware):

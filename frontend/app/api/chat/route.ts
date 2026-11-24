@@ -5,7 +5,7 @@
 
 import { NextResponse } from "next/server";
 
-/** Chat SSE can include web search; keep the proxy alive for the backend budget. */
+/** Chat SSE can include web search; keep the Vercel proxy alive. */
 export const maxDuration = 300;
 export const dynamic = "force-dynamic";
 

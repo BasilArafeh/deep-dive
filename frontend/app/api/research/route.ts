@@ -5,7 +5,7 @@
 
 import { NextResponse } from "next/server";
 
-/** Research SSE can run for several minutes; match the backend Vercel limit. */
+/** Research SSE can run for several minutes; keep the Vercel proxy alive. */
 export const maxDuration = 300;
 export const dynamic = "force-dynamic";
 

@@ -1,12 +1,13 @@
 # Deep Dive
 
-![Python](https://img.shields.io/badge/Python-3.12+-3776AB?style=flat&logo=python&logoColor=white)
+![Python](https://img.shields.io/badge/Python-3.11+-3776AB?style=flat&logo=python&logoColor=white)
 ![FastAPI](https://img.shields.io/badge/FastAPI-0.100+-009688?style=flat&logo=fastapi&logoColor=white)
 ![Next.js](https://img.shields.io/badge/Next.js-15-black?style=flat&logo=next.js&logoColor=white)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.0+-3178C6?style=flat&logo=typescript&logoColor=white)
 ![LangGraph](https://img.shields.io/badge/LangGraph-Agent-F97316?style=flat)
 ![GPT-4o](https://img.shields.io/badge/GPT--4o-LLM-412991?style=flat&logo=openai&logoColor=white)
 ![Pinecone](https://img.shields.io/badge/Pinecone-Vector_DB-00C2A8?style=flat)
+![Railway](https://img.shields.io/badge/Railway-Deployed-0B0D0E?style=flat&logo=railway&logoColor=white)
 ![Vercel](https://img.shields.io/badge/Vercel-Deployed-000000?style=flat&logo=vercel&logoColor=white)
 
 **An agentic research report generator.** Type a topic → the agent searches the web and academic papers, synthesizes a structured cited report, and lets you interrogate it in a RAG-powered chat.
@@ -34,7 +35,7 @@
                   │ SSE stream                        │ SSE stream
                   ▼                                   ▼
 ┌─────────────────────────────────────────────────────────────────┐
-│                      FastAPI Backend (Vercel)                   │
+│                      FastAPI Backend (Railway)                  │
 │                                                                 │
 │  ┌─────────────────────────────────────────────────────────┐    │
 │  │                    LangGraph Agent                      │    │
@@ -80,7 +81,7 @@
 | Academic search | arXiv API |
 | Scraping | httpx + BeautifulSoup4 |
 | Observability | LangSmith |
-| Deployment | Vercel (Python / FastAPI) |
+| Deployment | Railway (Docker) |
 
 ### Frontend
 | Layer | Technology |
@@ -212,7 +213,7 @@ Every user message goes through a multi-route orchestrator before any Pinecone o
 ### Rate Limiting & Middleware
 - SlowAPI rate limiting: 20/minute chat, 10/minute research
 - Request size limits: 50KB for chat (carries report context), 10KB for research
-- 280 second global request timeout (under Vercel's 300s function limit)
+- 180 second global request timeout
 - Request ID middleware for tracing
 - Centralized exception handlers for 404/405/422/500
 
@@ -255,8 +256,8 @@ deep-dive/
 │   │   ├── limiter.py            # Rate limiting
 │   │   ├── metrics.py            # In-memory metrics
 │   │   └── main.py               # App entrypoint
-│   ├── vercel.json
-│   ├── .python-version
+│   ├── Dockerfile
+│   ├── railway.toml
 │   └── requirements.txt
 │
 ├── frontend/
@@ -286,7 +287,7 @@ deep-dive/
 │       └── utils.ts              # cn, truncateText, storageKeys
 │
 └── .github/workflows/
-    └── backend.yml               # CI: pytest on main (Vercel auto-deploys)
+    └── backend.yml               # CI: test → deploy to Railway on main
 ```
 
 ---
@@ -294,7 +295,7 @@ deep-dive/
 ## Getting Started
 
 ### Prerequisites
-- Python 3.12+
+- Python 3.11+
 - Node.js 18+
 - OpenAI API key
 - Pinecone account + index
@@ -354,20 +355,20 @@ NEXT_PUBLIC_API_KEY=
 
 ## Deployment
 
-### Backend → Vercel
-1. Create a Vercel project from the GitHub repo
-2. Set root directory to `backend` (Framework Preset: FastAPI)
-3. Add all backend environment variables
-4. Set `ENVIRONMENT=production` and `FRONTEND_URL` to the frontend Vercel URL
-5. `vercel.json` sets `maxDuration` to 300s on `app/main.py` so research SSE can finish
+### Backend → Railway
+1. Connect GitHub repo to Railway
+2. Set root directory to `backend`
+3. Builder: Dockerfile
+4. Add all environment variables
+5. Set `ENVIRONMENT=production` and `FRONTEND_URL` to your Vercel URL
 
 ### Frontend → Vercel
-1. Create a Vercel project from the GitHub repo
+1. Connect GitHub repo to Vercel
 2. Set root directory to `frontend`
 3. Framework: Next.js (auto-detected)
-4. Add `NEXT_PUBLIC_API_URL` (backend Vercel URL) and `NEXT_PUBLIC_API_KEY`
+4. Add `NEXT_PUBLIC_API_URL` (Railway URL) and `NEXT_PUBLIC_API_KEY`
 
-After both are deployed, update `FRONTEND_URL` on the backend project to the live frontend URL and redeploy.
+After both are deployed, update `FRONTEND_URL` in Railway to the live Vercel URL and redeploy.
 
 ---
 

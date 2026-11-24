@@ -1,0 +1,10 @@
+# Keeps the Docker build context small and safe. Never send .env into the
+# build — secrets must come from Railway/runtime env vars, not the image.
+
+.env
+venv/
+__pycache__/
+*.pyc
+.git/
+*.md
+.pytest_cache/
